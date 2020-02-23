@@ -15,6 +15,8 @@ struct ContentView: View {
     @State private var usedWords = [String]()
     @State private var newWord = String()
     @State private var rootWord = String()
+    @State private var allWords = [String]()
+    
     
     @State private var errorTitle = String()
     @State private var errorMessage = String()
@@ -35,6 +37,11 @@ struct ContentView: View {
                 }
             }
         .navigationBarTitle(rootWord)
+        .navigationBarItems(trailing:
+            Button(action: restart) {
+                Text("Restart")
+            }
+        )
         .onAppear(perform: startGame)
             .alert(isPresented: $shwoingError){
                 Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("OK")))
@@ -71,7 +78,7 @@ struct ContentView: View {
         
             if let startWords = try? String(contentsOf: startWordsUrl){
               
-                let allWords = startWords.components(separatedBy: "\n")
+            allWords = startWords.components(separatedBy: "\n")
                 
                 rootWord = allWords.randomElement() ?? "silkworm"
                 
@@ -79,6 +86,12 @@ struct ContentView: View {
             }}
         
         fatalError("could not load start.txt from bundle")
+    }
+    
+    func restart(){
+        rootWord = allWords.randomElement() ?? "silkworm"
+        usedWords = []
+        newWord = ""
     }
     
     func isOriginal(word : String) -> Bool {
