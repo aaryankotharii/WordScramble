@@ -8,9 +8,15 @@
 
 import SwiftUI
 
+var people = ["A","B","C","D","E"]
+
 struct ContentView: View {
     var body: some View {
-        Text("Hello, World!")
+        List {
+            ForEach(people, id: \.self){
+                Text("\($0)")
+            }
+        }
     }
 }
 
